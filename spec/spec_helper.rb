@@ -64,11 +64,11 @@ RSpec.configure do |config|
   # See https://github.com/DatabaseCleaner/database_cleaner#rspec-with-capybara-example
   config.before :suite do
     FileUtils.rm_rf(File.join(__dir__, 'tmp', 'cache'))
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.clean_with(:transaction)
   end
 
   config.before :each do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.strategy = :transaction
   end
 
   config.before :each do
@@ -92,7 +92,7 @@ RSpec.configure do |config|
   config.default_retry_count = 3
   config.display_try_failure_messages = true
   config.exceptions_to_retry = [Net::ReadTimeout]
-  
+
   if Bullet.enable?
     config.before(:each) { Bullet.start_request }
     config.after :each do
